@@ -3,8 +3,10 @@ import Navbar from './components/Navbar';
 import KYCForm from './components/KYCForm';
 import LiveVerification from './components/LiveVerification';
 import AdminDashboard from './components/AdminDashboard';
+import LandingPage from './components/LandingPage';
 import { KYCSubmission, KYCStatus, VerificationResult } from './types';
-import { analyzeKYCSubmission } from './services/geminiService';
+// CHANGED: Import from verificationService instead of geminiService
+import { analyzeKYCSubmission } from './services/verificationService';
 import { CheckCircle, AlertTriangle, XCircle, RefreshCcw } from 'lucide-react';
 
 // Mock Initial Data for Dashboard
@@ -19,7 +21,7 @@ const App: React.FC = () => {
   const [submissions, setSubmissions] = useState<KYCSubmission[]>(MOCK_SUBMISSIONS);
   
   // User View States
-  const [userState, setUserState] = useState<'form' | 'processing' | 'result'>('form');
+  const [userState, setUserState] = useState<'landing' | 'form' | 'processing' | 'result'>('landing');
   const [currentSubmission, setCurrentSubmission] = useState<Partial<KYCSubmission> | null>(null);
   const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
 
@@ -34,7 +36,7 @@ const App: React.FC = () => {
       const docBase64 = reader.result as string;
       
       try {
-        // Call Gemini Service
+        // Call Python Backend Service
         const result = await analyzeKYCSubmission(docBase64, selfieBase64);
         setVerificationResult(result);
 
@@ -72,7 +74,7 @@ const App: React.FC = () => {
   };
 
   const resetUserFlow = () => {
-    setUserState('form');
+    setUserState('landing');
     setCurrentSubmission(null);
     setVerificationResult(null);
   };
@@ -86,11 +88,15 @@ const App: React.FC = () => {
           <AdminDashboard submissions={submissions} />
         ) : (
           <div className="max-w-4xl mx-auto px-4">
+            {userState === 'landing' && (
+              <LandingPage onStart={() => setUserState('form')} />
+            )}
+
             {userState === 'form' && (
                <>
                 <div className="text-center mb-10">
-                    <h1 className="text-3xl font-bold text-slate-900">Secure Identity Verification</h1>
-                    <p className="mt-2 text-slate-600">Complete your KYC in under 2 minutes using AI-powered verification.</p>
+                    <h2 className="text-2xl font-semibold text-slate-900">Begin Verification</h2>
+                    <p className="mt-2 text-slate-600">Please provide your details and documents below.</p>
                 </div>
                 <KYCForm onSubmit={handleKYCSubmit} />
                </>

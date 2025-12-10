@@ -1,6 +1,6 @@
 {
-  "name": "Copy of Sentinel KYC",
-  "description": "Next-generation automated KYC verification system featuring real-time biometric analysis, risk scoring, and admin oversight using Gemini AI.",
+  "name": "Sentinel KYC Python",
+  "description": "KYC verification system using local Python backend with OpenCV, Tesseract, and Face Recognition.",
   "requestFramePermissions": [
     "camera"
   ]
