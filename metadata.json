@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Sentinel KYC",
+  "description": "Next-generation automated KYC verification system featuring real-time biometric analysis, risk scoring, and admin oversight using Gemini AI.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
