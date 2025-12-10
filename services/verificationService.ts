@@ -1,6 +1,7 @@
 import { VerificationResult } from "../types";
 
-const API_URL = "http://localhost:8000";
+// Use 127.0.0.1 instead of localhost to avoid IPv6/IPv4 resolution issues
+const API_URL = "http://127.0.0.1:8000";
 
 export const analyzeKYCSubmission = async (
   documentBase64: string,
@@ -27,13 +28,14 @@ export const analyzeKYCSubmission = async (
     
   } catch (error) {
     console.error("Verification failed:", error);
-    // Graceful fallback if Python backend is offline
+    
+    // Return a structured error result so the UI doesn't crash
     return {
       documentValid: false,
       faceMatchScore: 0,
       tamperDetected: false,
       riskScore: 100,
-      reasoning: "Connection to Python Backend failed. Is main.py running on port 8000?",
+      reasoning: "Connection to Python Backend failed. Please ensure 'python backend/main.py' is running on port 8000.",
       extractedData: {}
     };
   }

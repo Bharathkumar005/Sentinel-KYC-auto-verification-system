@@ -153,7 +153,28 @@ const App: React.FC = () => {
                                         {verificationResult.tamperDetected ? "Tampering Detected" : "Passed"}
                                     </span>
                                 </div>
-                                <div className="pt-2 border-t border-slate-200 flex justify-between">
+                                
+                                {verificationResult.extractedData && (Object.keys(verificationResult.extractedData).length > 0) && (
+                                    <div className="mt-3 pt-3 border-t border-slate-200 border-dashed">
+                                        <p className="text-xs font-semibold text-slate-500 mb-2 uppercase">Extracted Information</p>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <div>
+                                                <span className="text-xs text-slate-400 block">Name</span>
+                                                <span className="font-medium">{verificationResult.extractedData.name || 'Not Found'}</span>
+                                            </div>
+                                            <div>
+                                                <span className="text-xs text-slate-400 block">ID Number</span>
+                                                <span className="font-medium">{verificationResult.extractedData.idNumber || 'Not Found'}</span>
+                                            </div>
+                                            <div>
+                                                <span className="text-xs text-slate-400 block">DOB</span>
+                                                <span className="font-medium">{verificationResult.extractedData.dob || 'Not Found'}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="pt-3 mt-3 border-t border-slate-200 flex justify-between">
                                     <span className="text-slate-900 font-semibold">Risk Score</span>
                                     <span className={`font-bold ${
                                         verificationResult.riskScore < 30 ? 'text-green-600' :
